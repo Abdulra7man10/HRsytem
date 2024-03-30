@@ -10,7 +10,9 @@ namespace HRsytem
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
+            Employee e = new Employee() { ID = 1 };
+            Console.WriteLine(e.ID);
+            Console.ReadLine();
         }
     }
 }
