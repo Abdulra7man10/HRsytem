@@ -10,9 +10,16 @@ namespace HRsytem
     {
         static void Main(string[] args)
         {
-            Employee e = new Employee() { ID = 1 };
-            Console.WriteLine(e.ID);
-            Console.ReadLine();
+            Department d = new Department("Developer",1);
+            Employee e = new HourlyEmployee(1,30,100);
+            e.Name = "Abdo";
+            e.JobTitle = "Junior";
+            e.Email = "abdo144418@gmail.com";
+            e.PhoneNumber = "01143685049";
+            e.Depart = d;
+            e.ExtraMethod(5);
+            Console.WriteLine(e.displayDetails());
         }
     }
+
 }
