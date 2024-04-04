@@ -184,7 +184,6 @@ namespace HRsytem
                 case 0:
                     return;
             }
-            if (new_emp != null)
             {
                 new_emp.Name = na;
                 new_emp.JobTitle = jo;
