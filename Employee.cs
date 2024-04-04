@@ -11,11 +11,12 @@ namespace HRsytem
         public string JobTitle { get; set; }
         public Department Depart { get; set; } //if deleted make there depart as '0'
 
-        //public Benefit
+        public Employee () { }
 
-        public Employee(int id) 
+        public Employee(int id)
         {
             this.ID = id;
+            //Depart = d;
         }
 
         public virtual string displayDetails() => $"ID : {ID}\nName : {Name}\nJob title : {JobTitle}\nPhone number : {PhoneNumber}\nEmail : {Email}\n{getDetails()}\n";
@@ -33,7 +34,7 @@ namespace HRsytem
         public double HoursWorked { get; set; }
         public double Rate { get; set; }
 
-        public HourlyEmployee(int id, double hw, double r) : base(id) 
+        public HourlyEmployee(int id, double hw, double r) : base(id)
         {
             this.HoursWorked = hw;
             this.Rate = r;
@@ -44,7 +45,7 @@ namespace HRsytem
             return HoursWorked * Rate;
         }
         public override string getDetails() => base.getDetails() + "Hourly";
-        public override string displayDetails() => base.displayDetails() + 
+        public override string displayDetails() => base.displayDetails() +
             $"Hours Worked : {HoursWorked}\nRate per hour : {Rate}\nTotal Salary : {this.getSalary()}\n";
         public void addHours(double moreHours) => HoursWorked += moreHours;
         public override void ExtraMethod(double more)
@@ -57,7 +58,7 @@ namespace HRsytem
     {
         public double Salary { get; set; }
 
-        public SalariedEmployee(int id, double s) : base(id) 
+        public SalariedEmployee(int id, double s) : base(id)
         {
             this.Salary = s;
         }
@@ -75,7 +76,7 @@ namespace HRsytem
     {
         public double Bonus { get; set; }
 
-        public ManagerEmployee(int id, double s, double b) : base(id,s) 
+        public ManagerEmployee(int id, double s, double b) : base(id, s)
         {
             this.Bonus = b;
         }
@@ -99,7 +100,7 @@ namespace HRsytem
         public double Target { get; set; }
         public double Rate { get; set; }
 
-        public CommissionEmployee(int id, double t, double r) : base(id) 
+        public CommissionEmployee(int id, double t, double r) : base(id)
         {
             this.Target = t;
             this.Rate = r;

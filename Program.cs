@@ -13,12 +13,21 @@ namespace HRsytem
             Department d = new Department("Developer",1);
             Employee e = new HourlyEmployee(1,30,100);
             e.Name = "Abdo";
-            e.JobTitle = "Junior";
+            e.JobTitle = "Senior";
             e.Email = "abdo144418@gmail.com";
             e.PhoneNumber = "01143685049";
-            e.Depart = d;
             e.ExtraMethod(5);
-            Console.WriteLine(e.displayDetails());
+            Employee e2 = new SalariedEmployee(2,3000);
+            e2.Name = "Ali";
+            e2.JobTitle = "Junior";
+            e2.Email = "ali22@gmail.com";
+            e2.PhoneNumber = "0546924998";
+            d.addEmployee(e2);
+            d.changeManager(e);
+            e2.PhoneNumber = "11111";
+            Console.WriteLine(d.Employees[0].displayDetails());
+
+
         }
     }
 
