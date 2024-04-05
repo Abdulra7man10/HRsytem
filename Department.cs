@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace HRsytem
 {
@@ -15,6 +16,15 @@ namespace HRsytem
             this.Name = name;
             this.ID = i;
             this.Employees = new List<Employee>();
+            Manager = null;
+        }
+
+        public override string ToString() => $"Name : {Name}\nID : {ID}\n";
+
+        public void AllEmployees()
+        {
+            foreach (Employee emp in Employees)
+                Console.WriteLine($"{emp.ID}  {emp.Name}");
         }
 
         public void addEmployee(Employee em)

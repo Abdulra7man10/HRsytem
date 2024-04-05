@@ -19,13 +19,11 @@ namespace HRsytem
             //Depart = d;
         }
 
-        public virtual string displayDetails() => $"ID : {ID}\nName : {Name}\nJob title : {JobTitle}\nPhone number : {PhoneNumber}\nEmail : {Email}\n{getDetails()}\n";
-        public virtual string getDetails() => "Employee Type : ";
+        public virtual string displayDetails() => $"ID : {ID}\nName : {Name}\nJob title : {JobTitle}\nDepartment : {Depart.Name} -> {Depart.ID}\nPhone number : {PhoneNumber}\nEmail : {Email}\n{getType()}\n";
+        public virtual string getType() => "Employee Type : ";
+        public abstract string getDetails();
         public abstract double getSalary();
-        public virtual void ExtraMethod(double more)
-        {
-
-        }
+        public abstract void ExtraMethod(double more, double r=0);
 
     }
 
@@ -44,13 +42,16 @@ namespace HRsytem
         {
             return HoursWorked * Rate;
         }
-        public override string getDetails() => base.getDetails() + "Hourly";
+        public override string getType() => base.getType() + "Hourly";
+        public override string getDetails() => $"{HoursWorked} - {Rate}";
         public override string displayDetails() => base.displayDetails() +
             $"Hours Worked : {HoursWorked}\nRate per hour : {Rate}\nTotal Salary : {this.getSalary()}\n";
         public void addHours(double moreHours) => HoursWorked += moreHours;
-        public override void ExtraMethod(double more)
+        public override void ExtraMethod(double more, double r=0)
         {
             addHours(more);
+            if (r != 0)
+                Rate = r;
         }
     }
 
@@ -67,9 +68,14 @@ namespace HRsytem
         {
             return Salary;
         }
-        public override string getDetails() => base.getDetails() + "Salaried";
+        public override string getType() => base.getType() + "Salaried";
+        public override string getDetails() => $"{Salary}";
         public override string displayDetails() => base.displayDetails() +
             $"Total Salary : {this.getSalary()}\n";
+        public override void ExtraMethod(double more, double r=0)
+        {
+            Salary = more;
+        }
     }
 
     class ManagerEmployee : SalariedEmployee
@@ -85,13 +91,16 @@ namespace HRsytem
         {
             return Salary + Bonus;
         }
-        public override string getDetails() => base.getDetails() + "Manager";
+        public override string getType() => base.getType() + "Manager";
+        public override string getDetails() => base.getDetails() + $" - {Bonus}";
         public override string displayDetails() => base.displayDetails() +
             $"Salary : {Salary}\nBonus : {Bonus}\nTotal Salary : {this.getSalary()}\n";
         public void addBonus(double moreBonus) => Bonus += moreBonus;
-        public override void ExtraMethod(double more)
+        public override void ExtraMethod(double more, double more2=0)
         {
             addBonus(more);
+            if (more2 != 0)
+                Salary = more2;
         }
     }
 
@@ -109,8 +118,14 @@ namespace HRsytem
         {
             return Target * Rate;
         }
-        public override string getDetails() => base.getDetails() + "Commission";
+        public override string getType() => base.getType() + "Commission";
+        public override string getDetails() => $"{Target} - {Rate}";
         public override string displayDetails() => base.displayDetails() +
             $"Target : {Target}\nRate : {Rate}\nTotal Salary : {this.getSalary()}\n";
+        public override void ExtraMethod(double more, double r)
+        {
+            Target = more;
+            Rate = r;
+        }
     }
 }

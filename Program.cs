@@ -10,6 +10,9 @@ namespace HRsytem
     {
         static void Main(string[] args)
         {
+            HRsystem h = new HRsystem();
+            h.MainHub();
+            /*
             Department d = new Department("Developer",1);
             Employee e = new HourlyEmployee(1,30,100);
             e.Name = "Abdo";
@@ -26,6 +29,9 @@ namespace HRsytem
             d.changeManager(e);
             e2.PhoneNumber = "11111";
             Console.WriteLine(d.Employees[0].displayDetails());
+            */
+            //int idx1 = h.search<Employee>(emp=>emp.ID==1);
+            //int idx2 = h.search<Department>(depart => depart.ID == 2);
 
 
         }
