@@ -1,4 +1,6 @@
 ﻿using System.Runtime.Remoting.Messaging;
+using System.Security.Cryptography;
+using System.Security.Principal;
 
 namespace HRsytem
 {
@@ -17,6 +19,11 @@ namespace HRsytem
         {
             this.ID = id;
             //Depart = d;
+        }
+
+        public override string ToString()
+        {
+            return $"{ID}  {Name}  {Email}  {PhoneNumber}  {JobTitle}  {getSalary()}  {Depart.Name}";
         }
 
         public virtual string displayDetails() => $"ID : {ID}\nName : {Name}\nJob title : {JobTitle}\nDepartment : {Depart.Name} -> {Depart.ID}\nPhone number : {PhoneNumber}\nEmail : {Email}\n{getType()}\n";

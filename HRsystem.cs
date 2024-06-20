@@ -390,42 +390,96 @@ namespace HRsytem
                 Console.WriteLine("-----------------------");
                 Console.WriteLine("|1- Name               |");
                 Console.WriteLine("|                      |");
-                Console.WriteLine("|2- Email              |");
+                Console.WriteLine("|2- Job title          |");
                 Console.WriteLine("|                      |");
-                Console.WriteLine("|3- Phone number       |");
+                Console.WriteLine("|3- Income             |");
                 Console.WriteLine("|                      |");
-                Console.WriteLine("|4- Job title          |");
-                Console.WriteLine("|                      |");
-                Console.WriteLine("|5- Income             |");
-                Console.WriteLine("|                      |");
-                Console.WriteLine("|6- Department         |");
+                Console.WriteLine("|4- Department         |");
                 Console.WriteLine("|                      |");
                 Console.WriteLine("|0- Back               |");
                 Console.WriteLine("-----------------------");
 
                 Console.Write("Choose order : ");
                 choice = Console.ReadLine();
-            } while (!int.TryParse(choice, out choiceInt) || choiceInt < 0 || choiceInt > 6);
+            } while (!int.TryParse(choice, out choiceInt) || choiceInt < 0 || choiceInt > 4);
 
             switch (choiceInt)
             {
                 case 1:
+                    printSort(employees, "Sorted by Name", CompareByName, true);
                     break;
                 case 2:
+                    {
+                        string j;
+                        Console.Write("Write a job title : ");
+                        j = Console.ReadLine();
+                        printReport(employees, $"Employees of Job-title : {j}", e => e.JobTitle == j);
+                    }
                     break;
                 case 3:
+                    printSort(employees, "Sorted by Income", CompareBySalary, false);
                     break;
                 case 4:
-                    break;
-                case 5:
-                    break;
-                case 6:
+                    {
+                        int d;
+                        Console.Write("Write a Department ID : ");
+                        d = int.Parse(Console.ReadLine());
+                        if (!exist<Department>(de => de.ID == d))
+                        {
+                            Console.WriteLine("Sorry this ID is not exist :(");
+                            break;
+                        }
+                        printReport(employees, $"Employees of Department ID : {d}", e => e.Depart.ID == d);
+                    }
                     break;
                 case 0:
                     return;
             }
             Console.ReadKey();
-            EditEmployee();
+            EmployeeHub();
+        }
+
+        public delegate bool isIlegible(Employee e);
+        public delegate int compareEmps(Employee e1, Employee e2, bool ascending);
+
+        private void printReport(List<Employee> employees, string title, isIlegible legal)
+        {
+            Console.WriteLine($"ID  Name    Email    Phone-number    Job-title    Salary    Department");
+            foreach (Employee e in employees)
+            {
+                if (legal(e))
+                    Console.WriteLine(e);
+            }
+        }
+
+        int CompareByName(Employee e1, Employee e2, bool ascending)
+        {
+            return ascending ? string.Compare(e1.Name, e2.Name) : string.Compare(e2.Name, e1.Name);
+        }
+
+        int CompareBySalary(Employee e1, Employee e2, bool ascending)
+        {
+            return ascending ? e1.getSalary().CompareTo(e2.getSalary()) : e2.getSalary().CompareTo(e1.getSalary());
+        }
+
+
+        private void printSort(List<Employee> e, string title, compareEmps compare, bool ascending) {
+            for (int i = 0; i < employees.Count - 1; i++)
+            {
+                int flag = 0;
+                for (int j = 0; j < employees.Count - 1 - i; j++)
+                {
+                    if (compare(e[j], e[j + 1], ascending) > 0);
+                    {
+                        Employee temp = e[j];
+                        e[j] = e[j + 1];
+                        e[j + 1] = temp;
+                        flag = 1;
+                    }
+                }
+                if (flag == 0) break;
+            }
+            printReport(e, title, em => true);
         }
 
         public int search<T>(Filter<T> filter)
@@ -518,6 +572,17 @@ namespace HRsytem
                     }
                     break;
                 case 4:
+                    {
+                        int d;
+                        Console.Write("Write a Department ID : ");
+                        d = int.Parse(Console.ReadLine());
+                        if (!exist<Department>(de => de.ID == d))
+                        {
+                            Console.WriteLine("Sorry this ID is not exist :(");
+                            break;
+                        }
+                        printReport(employees, $"Employees of Department ID : {d}", e => e.Depart.ID == d);
+                    }
                     break;
                 case 5:
                     {
