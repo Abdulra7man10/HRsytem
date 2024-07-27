@@ -4,8 +4,10 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.IO;
+using System.Xml.Linq;
 
-namespace HRsytem
+namespace HRsystem
 {
     public delegate bool Filter<in T>(T value);
     internal class HRsystem
@@ -19,13 +21,144 @@ namespace HRsytem
         public HRsystem() 
         {
             employees = new List<Employee>();
-            employeeCounter = 0;
             biggestEmployee = 0;
             departments = new List<Department>();
-            departments.Add(new Department("No Department", 0));
-            departmentCounter = 1;
-            biggestDepartment = 1;
+            //departments.Add(new Department("No Department", 0));
+            //biggestDepartment = 1;
+
+            string path = "C:\\Users\\abdo1\\Desktop\\Current_track\\1-Back-end-track\\C#\\HRsytem\\d\\departments.txt";
+            var result = File.ReadAllLines(path);
+            List<int> managersID = LoadDepartments(result);
+
+            path = "C:\\Users\\abdo1\\Desktop\\Current_track\\1-Back-end-track\\C#\\HRsytem\\d\\employees.txt";
+            result  = File.ReadAllLines(path);
+            LoadEmployees(result);
+
+            for (int i=0; i<managersID.Count; i++)
+            {
+                int index = search<Employee>(e => e.ID == managersID[i]);
+                if (index != -1) 
+                    departments[i].Manager = employees[index];
+            }
+            biggestEmployee = employees.Count;
+            biggestDepartment = departments.Count;
         }
+        private List<int> LoadDepartments(string[] departmentData)
+        {
+            List<int> managersId = new List<int>();
+            foreach (var line in departmentData.Skip(1)) // Skip the header line
+            {
+                var parts = line.Split(' ').Select(p => p.Trim()).ToArray();
+                if (parts.Length < 3) // Ensure there are enough parts
+                {
+                    Console.WriteLine($"Skipping invalid line: {line}");
+                    continue;
+                }
+
+                int id;
+                if (!int.TryParse(parts[0], out id))
+                {
+                    Console.WriteLine($"Invalid department ID format: {parts[0]}");
+                    continue;
+                }
+
+                string name = parts[1].Replace('-', ' ');
+
+                int managerID;
+                if (!int.TryParse(parts[2], out managerID))
+                {
+                    Console.WriteLine($"Invalid manager ID format: {parts[2]}");
+                    continue;
+                }
+
+                managersId.Add(managerID);
+                Department depart = new Department(name, id);
+                departments.Add(depart);
+            }
+            return managersId;
+        }
+        private void LoadEmployees(string[] employeeData)
+        {
+            foreach (var line in employeeData.Skip(1)) // Skip the header line
+            {
+                var parts = line.Split(' ');
+
+                int id = int.Parse(parts[0]);
+                string name = parts[1].Replace('-', ' ');
+                string email = parts[2];
+                string phoneNumber = parts[3];
+                int departmentID = int.Parse(parts[4]);
+                Department depart = departments[search<Department>(d => d.ID == departmentID)];
+                int type = int.Parse(parts[5]);
+                string jobTitle = parts[6].Replace('-', ' ');
+
+                Employee employee = null;
+
+                switch (type)
+                {
+                    case 1:
+                        {
+                            int hours = int.Parse(parts[7]);
+                            int rate = int.Parse(parts[8]);
+                            employee = new HourlyEmployee(id, name, email, phoneNumber, jobTitle, depart, hours, rate);
+                            break;
+                        }
+                    case 2:
+                        {
+                            int salary = int.Parse(parts[7]);
+                            employee = new SalariedEmployee(id, name, email, phoneNumber, jobTitle, depart, salary);
+                            break;
+                        }
+                    case 3: 
+                        {
+                            int salary = int.Parse(parts[7]);
+                            int bonus = int.Parse(parts[8]);
+                            employee = new ManagerEmployee(id, name, email, phoneNumber, jobTitle, depart, salary, bonus);
+                            break;
+                        }
+                    case 4:
+                        {
+                            int target = int.Parse(parts[7]);
+                            int rate = int.Parse(parts[8]);
+                            employee = new CommissionEmployee(id, name, email, phoneNumber, jobTitle, depart, target, rate);
+                            break;
+                        }
+                }
+                if (employee != null)
+                {
+                    biggestDepartment++;
+                    employees.Add(employee);
+                    depart?.addEmployee(employee);
+                }
+            }
+        }
+        public void SaveEmployeesToFile()
+        {
+            string filePath = "C:\\Users\\abdo1\\Desktop\\Current_track\\1-Back-end-track\\C#\\HRsytem\\d\\employees.txt";
+            using (var writer = new StreamWriter(filePath))
+            {
+                // Write the header
+                writer.WriteLine("ID Name Email PhoneNumber DepartmentID EmployeeType JobTitle");
+                foreach (var employee in employees)
+                {
+                    writer.WriteLine(employee.ToFileString());
+                }
+            }
+        }
+        public void SaveDepartmentsToFile()
+        {
+            string filePath = "C:\\Users\\abdo1\\Desktop\\Current_track\\1-Back-end-track\\C#\\HRsytem\\d\\departments.txt";
+            using (var writer = new StreamWriter(filePath))
+            {
+                // Write the header
+                writer.WriteLine("DepartmentID Name ManagerID");
+                foreach (var depart in departments)
+                {
+                    writer.WriteLine(depart.ToFileString());
+                }
+            }
+        }
+
         public void MainHub()
         {
             string choice;
@@ -57,6 +190,8 @@ namespace HRsytem
                     DepartHub();
                     break;
                 case 0:
+                    SaveEmployeesToFile();
+                    SaveDepartmentsToFile();
                     return;
             }
             Console.ReadKey();
@@ -216,7 +351,6 @@ namespace HRsytem
             Console.WriteLine($"\n  Done -->{na} ID is {biggestEmployee}");
 
             biggestEmployee++;
-            employeeCounter++;
         }
 
         public void EditEmployee() 
@@ -375,7 +509,6 @@ namespace HRsytem
                 return;
             }
             employees.Remove(employees[idx]);
-            employeeCounter--;
             Console.WriteLine("The Employee is deleted :)");
         }
 
@@ -436,7 +569,7 @@ namespace HRsytem
                     return;
             }
             Console.ReadKey();
-            EmployeeHub();
+            ReportEmployee();
         }
 
         public delegate bool isIlegible(Employee e);
@@ -545,7 +678,6 @@ namespace HRsytem
                         departments.Add(new_dep);
                         Console.WriteLine($" Depratment ID is {biggestDepartment} :)");
                         biggestDepartment++;
-                        departmentCounter++;
                     }
                     break;
                 case 2:
@@ -567,7 +699,6 @@ namespace HRsytem
                             departments[idx].removeEmployee(emp);
                         }
                         departments.Remove(departments[idx]);
-                        departmentCounter--;
                         Console.WriteLine("The Department is deleted :)");
                     }
                     break;

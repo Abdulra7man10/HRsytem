@@ -45,12 +45,17 @@
   <ItemGroup>
     <Compile Include="Department.cs" />
     <Compile Include="Employee.cs" />
+    <Compile Include="EmployeeExtensions.cs" />
     <Compile Include="HRsystem.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="d\departments.txt" />
+    <Content Include="d\employees.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

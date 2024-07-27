@@ -1,0 +1,20 @@
+ID Name Email PhoneNumber DepartmentID EmployeeType JobTitle
+1 John-Doe johndoe@example.com 01055550101 1 2 Manager 2200
+2 Jane-Smith janesmith@example.com 01055550102 1 2 HR-Manager 2500
+3 Alice-Johnson alicejohnson@example.com 01055550103 1 2 Recruiter 2000
+4 Bob-Brown bobbrown@example.com 01055550104 1 2 Assistant 1500
+5 Mike-Williams mikewilliams@example.com 01155550201 2 2 IT-Manager 3000
+6 Sarah-Davis sarahdavis@example.com 01155550202 2 2 Developer 2800
+7 James-Wilson jameswilson@example.com 01155550203 2 2 QA-Tester 2100
+8 Emily-Clark emilyclark@example.com 01155550204 2 2 Junior-Developer 2000
+9 David-Moore davidmoore@example.com 01155550205 2 2 DevOps-Engineer 1800
+10 Karen-Martinez karenmartinez@example.com 01255550301 3 2 Finance-Manager 2600
+11 Chris-Taylor christaylor@example.com 01255550302 3 2 Accountant 1700
+12 Jessica-Anderson jessicaanderson@example.com 01255550303 3 2 Financial-Analyst 2300
+13 Amanda-Thomas amandathomas@example.com 01055550401 4 2 Marketing-Manager 2300
+14 Daniel-White danielwhite@example.com 01055550402 4 2 Marketer 2333
+15 Laura-Harris lauraharris@example.com 01055550403 4 2 Sales-Executive 3222
+16 Kevin-Martin kevinmartin@example.com 01055550404 4 2 Sales-Representative 2222
+17 Rachel-Thompson rachelthompson@example.com 01055550405 4 2 Customer-Support-Specialist 2222
+18 George-Garcia georgegarcia@example.com 01055550406 4 2 Technical-Support-Engineer 2222
+19 Ali-Ahmed abdo144418@gmail.com 01143685049 2 1 Full-stack-developer 60 200
