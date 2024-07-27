@@ -1,4 +1,4 @@
-ID Name Email PhoneNumber DepartmentID EmployeeType JobTitle
+ID Name Email PhoneNumber DepartmentID EmployeeType JobTitle 20
 1 John-Doe johndoe@example.com 01055550101 1 2 Manager 2200
 2 Jane-Smith janesmith@example.com 01055550102 1 2 HR-Manager 2500
 3 Alice-Johnson alicejohnson@example.com 01055550103 1 2 Recruiter 2000

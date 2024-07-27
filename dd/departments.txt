@@ -1,5 +1,0 @@
-DepartmentID Name ManagerID EmployeeIDs
-1 HR 1001 101 102 103
-2 IT 1002 201 202 203 204
-3 Finance 1003 301 302
-4 Marketing 1004 401 402 403 404 405

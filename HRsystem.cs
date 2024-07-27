@@ -40,11 +40,10 @@ namespace HRsystem
                 if (index != -1) 
                     departments[i].Manager = employees[index];
             }
-            biggestEmployee = employees.Count;
-            biggestDepartment = departments.Count;
         }
         private List<int> LoadDepartments(string[] departmentData)
         {
+            biggestDepartment = int.Parse(departmentData[0].Split(' ').Last());
             List<int> managersId = new List<int>();
             foreach (var line in departmentData.Skip(1)) // Skip the header line
             {
@@ -79,6 +78,7 @@ namespace HRsystem
         }
         private void LoadEmployees(string[] employeeData)
         {
+            biggestEmployee = int.Parse(employeeData[0].Split(' ').Last());
             foreach (var line in employeeData.Skip(1)) // Skip the header line
             {
                 var parts = line.Split(' ');
@@ -137,8 +137,7 @@ namespace HRsystem
             string filePath = "C:\\Users\\abdo1\\Desktop\\Current_track\\1-Back-end-track\\C#\\HRsytem\\d\\employees.txt";
             using (var writer = new StreamWriter(filePath))
             {
-                // Write the header
-                writer.WriteLine("ID Name Email PhoneNumber DepartmentID EmployeeType JobTitle");
+                writer.WriteLine($"ID Name Email PhoneNumber DepartmentID EmployeeType JobTitle {biggestEmployee}");
                 foreach (var employee in employees)
                 {
                     writer.WriteLine(employee.ToFileString());
@@ -150,8 +149,7 @@ namespace HRsystem
             string filePath = "C:\\Users\\abdo1\\Desktop\\Current_track\\1-Back-end-track\\C#\\HRsytem\\d\\departments.txt";
             using (var writer = new StreamWriter(filePath))
             {
-                // Write the header
-                writer.WriteLine("DepartmentID Name ManagerID");
+                writer.WriteLine($"DepartmentID Name ManagerID {biggestDepartment}");
                 foreach (var depart in departments)
                 {
                     writer.WriteLine(depart.ToFileString());
